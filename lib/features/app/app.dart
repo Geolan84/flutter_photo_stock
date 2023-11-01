@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_stock/features/photo_list/photo_list.dart';
 
 /// App main widget.
 class PhotoStockApp extends StatelessWidget {
@@ -13,9 +14,7 @@ class PhotoStockApp extends StatelessWidget {
         fontFamily: 'Roboto',
       ),
       darkTheme: ThemeData.dark(),
-      home: const Center(
-        child: Text('Photo Stock'),
-      ),
+      home: const PhotoListScreen(),
     );
   }
 }

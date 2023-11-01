@@ -8,9 +8,11 @@ environment:
 
 dependencies:
   elementary: ^3.0.0
+  elementary_helper: ^1.0.1
   flutter:
     sdk: flutter
   provider: ^6.0.5
+  surf_logger: ^1.1.0
 
 dev_dependencies:
   flutter_test:
