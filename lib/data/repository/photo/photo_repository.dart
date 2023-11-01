@@ -13,7 +13,7 @@ class PhotoRepository {
           username: 'Shrek${index + 1}',
           likes: 28,
           color: '#260c0c',
-          blurHash: 'L78zPlIW0zEgoyIpsps.0gIp^%-T',
+          blurHash: 'L6PZfSi_.AyE_3t7t7R**0o#DgR4',
         ),
       ),
     );

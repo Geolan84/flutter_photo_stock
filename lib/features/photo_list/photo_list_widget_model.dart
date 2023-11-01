@@ -52,14 +52,12 @@ class PhotoListScreenWidgetModel
   }
 
   Future<void> handleStartScrolling() async {
-    if ((_scrollController.position.pixels < 8) ^ _alignTitleCenter.value) {
-      _alignTitleCenter.value = !alignTitleCenter.value;
-    }
+    _alignTitleCenter.value = _scrollController.position.pixels < 10;
   }
 
   Future<void> handleNextPage() async {
     if (!isPageLoading.value &&
-        _scrollController.position.pixels ==
+        _scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent) {
       _isPageLoading.value = true;
     }

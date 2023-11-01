@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
 import 'package:photo_stock/features/photo_list/photo_list_widget_model.dart';
 
@@ -124,19 +125,15 @@ class _PhotoList extends StatelessWidget {
             ),
           ),
         ),
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              ValueListenableBuilder<bool>(
-                  valueListenable: isPageLoading,
-                  builder: (_, loading, __) {
-                    return loading
-                        ? const _LoadingWidget()
-                        : const SizedBox.shrink();
-                  }),
-            ],
-          ),
-        )
+        SliverToBoxAdapter(
+          child: ValueListenableBuilder<bool>(
+              valueListenable: isPageLoading,
+              builder: (_, loading, __) {
+                return loading
+                    ? const _LoadingWidget()
+                    : const SizedBox.shrink();
+              }),
+        ),
       ],
     );
   }
@@ -148,62 +145,81 @@ class _PhotoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shadowColor:
-          Color(int.parse(photo.color.substring(1, 7), radix: 16) + 0xFF000000),
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
+    final photo_image = Image.network(
+      photo.imageLink,
+      loadingBuilder: (_, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return BlurHash(hash: photo.blurHash);
+      },
+      frameBuilder: (_, child, __, ___) {
+        return child;
+      },
+      fit: BoxFit.fill,
+    );
+    return DecoratedBox(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(photo.imageLink), fit: BoxFit.cover),
-            ),
-          ),
-          Positioned(
-            bottom: 10,
-            left: 10,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  photo.username,
-                  overflow: TextOverflow.fade,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(1, 1),
-                        blurRadius: 4,
-                      )
-                    ],
-                  ),
-                ),
-                Text(
-                  '${photo.likes} likes',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(1, 1),
-                        blurRadius: 4,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+        boxShadow: [
+          BoxShadow(
+            spreadRadius: 1,
+            color: Color(int.parse(photo.color.substring(1, 7), radix: 16) +
+                    0xFF000000)
+                .withOpacity(0.8),
+            blurRadius: 4,
           )
         ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            photo_image,
+            Positioned(
+              bottom: 10,
+              left: 10,
+              right: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    photo.username,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(1, 1),
+                          blurRadius: 4,
+                        )
+                      ],
+                    ),
+                  ),
+                  Text(
+                    '${photo.likes} likes',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(1, 1),
+                          blurRadius: 4,
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
