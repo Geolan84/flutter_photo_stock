@@ -22,7 +22,7 @@ class PhotoListScreenWidgetModel
     implements IPhotoListWidgetModel {
   final _photoListState = EntityStateNotifier<List<Photo>>();
   final _scrollController = ScrollController();
-  final _alignTitleCenter = ValueNotifier<bool>(false);
+  final _alignTitleCenter = ValueNotifier<bool>(true);
   final _isPageLoading = ValueNotifier<bool>(false);
 
   @override
