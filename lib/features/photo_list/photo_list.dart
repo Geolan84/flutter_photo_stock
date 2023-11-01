@@ -145,7 +145,7 @@ class _PhotoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final photo_image = Image.network(
+    final photoImage = Image.network(
       photo.imageLink,
       loadingBuilder: (_, child, loadingProgress) {
         if (loadingProgress == null) {
@@ -177,7 +177,7 @@ class _PhotoCard extends StatelessWidget {
           alignment: Alignment.center,
           fit: StackFit.expand,
           children: [
-            photo_image,
+            photoImage,
             Positioned(
               bottom: 10,
               left: 10,
