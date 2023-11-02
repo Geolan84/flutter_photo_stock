@@ -57,10 +57,11 @@ class PhotoListScreenWidgetModel
   }
 
   Future<void> handleNextPage() async {
-    if (!isPageLoading.value &&
-        _scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.atEdge &&
+        _scrollController.position.pixels != 0) {
       _isPageLoading.value = true;
+      await _loadAdditionalPage();
+      Logger.d('Handle next page!');
     }
   }
 
@@ -75,6 +76,19 @@ class PhotoListScreenWidgetModel
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Something went wrong')));
     super.onErrorHandle(error);
+  }
+
+  Future<void> _loadAdditionalPage() async {
+    final previousData = List<Photo>.from(_photoListState.value.data!);
+    //_photoListState.loading(_photoListState.value.data);
+    try {
+      final res = await model.loadPage();
+      previousData.addAll(res);
+      _photoListState.content(previousData);
+    } on Exception catch (e) {
+      Logger.d(e.toString());
+      _photoListState.error(e, previousData);
+    }
   }
 
   Future<void> _loadPhotoList() async {
