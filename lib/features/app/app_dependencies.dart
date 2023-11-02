@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:photo_stock/data/repository/photo/photo_repository.dart';
 import 'package:photo_stock/features/app/app.dart';
+import 'package:photo_stock/features/photo_detail/photo_detail_model.dart';
 import 'package:photo_stock/features/photo_list/photo_list_model.dart';
 import 'package:photo_stock/util/error/default_error_handler.dart';
-//import 'package:photo_stock/util/error/default_error_handler.dart';
 import 'package:provider/provider.dart';
 
 /// Widget with dependencies that live all runtime.
@@ -23,6 +23,7 @@ class _AppDependenciesState extends State<AppDependencies> {
   //late final PhotoClient _photoClient;
   late final PhotoRepository _photoRepository;
   late final PhotoListScreenModel _photoListScreenModel;
+  late final PhotoDetailModel _photoDetailModel;
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _AppDependenciesState extends State<AppDependencies> {
       _photoRepository,
       _defaultErrorHandler,
     );
+    _photoDetailModel = PhotoDetailModel(_defaultErrorHandler);
   }
 
   @override
@@ -48,6 +50,10 @@ class _AppDependenciesState extends State<AppDependencies> {
         Provider<PhotoListScreenModel>(
           create: (_) => _photoListScreenModel,
         ),
+        Provider<PhotoDetailModel>(
+          create: (_) => _photoDetailModel,
+        ),
+        //Provider<PhotoClient>(create: (_) => _photoClient,)
         // Provider<ThemeWrapper>(
         //   create: (_) => _themeWrapper,
         // ),

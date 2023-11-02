@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
+import 'package:photo_stock/features/photo_detail/photo_detail.dart';
 import 'package:photo_stock/features/photo_list/photo_list_widget_model.dart';
 
 class PhotoListScreen extends ElementaryWidget<IPhotoListWidgetModel> {
@@ -158,67 +159,75 @@ class _PhotoCard extends StatelessWidget {
       },
       fit: BoxFit.fill,
     );
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            spreadRadius: 1,
-            color: Color(int.parse(photo.color.substring(1, 7), radix: 16) +
-                    0xFF000000)
-                .withOpacity(0.8),
-            blurRadius: 4,
-          )
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: [
-            photoImage,
-            Positioned(
-              bottom: 10,
-              left: 10,
-              right: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    photo.username,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1, 1),
-                          blurRadius: 4,
-                        )
-                      ],
-                    ),
-                  ),
-                  Text(
-                    '${photo.likes} likes',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1, 1),
-                          blurRadius: 4,
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+    return InkWell(
+      onTap: () {
+        final detail = MaterialPageRoute(
+            builder: (_) =>
+                PhotoDetailScreen(photo: photo, photoImage: photoImage));
+        Navigator.push(context, detail);
+      },
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              spreadRadius: 1,
+              color: Color(int.parse(photo.color.substring(1, 7), radix: 16) +
+                      0xFF000000)
+                  .withOpacity(0.8),
+              blurRadius: 4,
+            )
           ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Stack(
+            alignment: Alignment.center,
+            fit: StackFit.expand,
+            children: [
+              photoImage,
+              Positioned(
+                bottom: 10,
+                left: 10,
+                right: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      photo.username,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(1, 1),
+                            blurRadius: 4,
+                          )
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '${photo.likes} likes',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(1, 1),
+                            blurRadius: 4,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
