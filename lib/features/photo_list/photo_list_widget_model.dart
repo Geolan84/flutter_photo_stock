@@ -6,6 +6,7 @@ import 'package:photo_stock/domain/photo/photo.dart';
 import 'package:photo_stock/features/photo_list/photo_list.dart';
 import 'package:photo_stock/features/photo_list/photo_list_model.dart';
 import 'package:provider/provider.dart';
+import 'package:surf_logger/surf_logger.dart';
 
 /// Factory for [PhotoListScreenWidgetModel]
 PhotoListScreenWidgetModel photoListScreenWMFactory(
@@ -81,9 +82,10 @@ class PhotoListScreenWidgetModel
     _photoListState.loading(previousData);
 
     try {
-      final res = await model.loadCountries();
+      final res = await model.loadPage();
       _photoListState.content(res);
     } on Exception catch (e) {
+      Logger.d(e.toString());
       _photoListState.error(e, previousData);
     }
   }

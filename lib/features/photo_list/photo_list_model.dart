@@ -1,4 +1,3 @@
-//import 'package:/data/repository/country/country_repository.dart';
 import 'package:elementary/elementary.dart';
 import 'package:photo_stock/data/repository/photo/photo_repository.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
@@ -13,11 +12,10 @@ class PhotoListScreenModel extends ElementaryModel {
     ErrorHandler errorHandler,
   ) : super(errorHandler: errorHandler);
 
-  /// Return iterable countries.
-  Future<List<Photo>> loadCountries() async {
+  Future<List<Photo>> loadPage() async {
     try {
-      final res = await _photoRepository.getAllPhotos();
-      return res.toList();
+      final res = await _photoRepository.getPage();
+      return res;
     } on Exception catch (e) {
       handleError(e);
       rethrow;
