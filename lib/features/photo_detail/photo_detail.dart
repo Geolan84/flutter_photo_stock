@@ -93,6 +93,9 @@ class _Photo extends StatelessWidget {
                   children: [
                     Text(
                       photo.username,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 32),
                     ),
