@@ -1,8 +1,16 @@
 import 'package:photo_stock/domain/photo/photo.dart';
 
+/// Interface for photo repository.
+abstract interface class IPhotoRepository {
+  /// Gets photo for first page.
+  Future<Iterable<Photo>> getAllPhotos();
+}
+
+/// Manages photos data for WM.
 class PhotoRepository {
+  /// Gets photo for first page.
   Future<Iterable<Photo>> getAllPhotos() async {
-    //Imitation of work.
+    // Imitation of work.
     await Future.delayed(const Duration(seconds: 1));
     return Future(
       () => List<Photo>.generate(
