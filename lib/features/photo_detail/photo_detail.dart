@@ -88,23 +88,25 @@ class _Photo extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      photo.username,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      softWrap: false,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 32),
-                    ),
-                    Text(
-                      '${photo.likes} likes',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                  ],
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        photo.username,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 32),
+                      ),
+                      Text(
+                        '${photo.likes} likes',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
