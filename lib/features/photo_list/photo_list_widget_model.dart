@@ -65,7 +65,6 @@ class PhotoListScreenWidgetModel
         _scrollController.position.pixels != 0) {
       _isPageLoading.value = true;
       await _loadAdditionalPage();
-      Logger.d('Handle next page!');
     }
   }
 
@@ -84,13 +83,12 @@ class PhotoListScreenWidgetModel
 
   Future<void> _loadAdditionalPage() async {
     final previousData = List<Photo>.from(_photoListState.value.data!);
-    //_photoListState.loading(_photoListState.value.data);
     try {
       final res = await model.loadPage();
       previousData.addAll(res);
       _photoListState.content(previousData);
     } on Exception catch (e) {
-      Logger.d(e.toString());
+      Logger.w(e.toString());
       _photoListState.error(e, previousData);
     }
   }
@@ -103,7 +101,7 @@ class PhotoListScreenWidgetModel
       final res = await model.loadPage();
       _photoListState.content(res);
     } on Exception catch (e) {
-      Logger.d(e.toString());
+      Logger.w(e.toString());
       _photoListState.error(e, previousData);
     }
   }
