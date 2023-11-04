@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
 import 'package:photo_stock/features/photo_list/photo_list.dart';
 import 'package:photo_stock/features/photo_list/photo_list_model.dart';
+import 'package:photo_stock/util/app_dictionary.dart';
 import 'package:provider/provider.dart';
 
 /// Factory for [PhotoListScreenWidgetModel]
@@ -74,8 +75,8 @@ class PhotoListScreenWidgetModel
 
   @override
   void onErrorHandle(Object error) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Something went wrong')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppDictionary.somethingWentWrong)));
     super.onErrorHandle(error);
   }
 

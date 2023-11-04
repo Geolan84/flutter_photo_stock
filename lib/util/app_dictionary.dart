@@ -11,4 +11,13 @@ abstract class AppDictionary {
 
   /// String with app name.
   static const appName = 'Photo Stock';
+
+  /// String for back button on photo detail screen.
+  static const backTitle = 'Back';
+
+  /// String for no photo title on photo detail screen.
+  static const noPhoto = 'This photo does not exist';
+
+  /// String for title, when something went wrong.
+  static const somethingWentWrong = 'Something went wrong';
 }
