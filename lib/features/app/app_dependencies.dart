@@ -1,4 +1,3 @@
-//import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_stock/data/repository/photo/photo_repository.dart';
 import 'package:photo_stock/features/app/app.dart';
@@ -9,8 +8,10 @@ import 'package:provider/provider.dart';
 
 /// Widget with dependencies that live all runtime.
 class AppDependencies extends StatefulWidget {
+  ///App instanse.
   final PhotoStockApp app;
 
+  ///Const constructor for AppDependencies.
   const AppDependencies({required this.app, super.key});
 
   @override
@@ -18,24 +19,18 @@ class AppDependencies extends StatefulWidget {
 }
 
 class _AppDependenciesState extends State<AppDependencies> {
-  //late final Dio _http;
   late final DefaultErrorHandler _defaultErrorHandler;
-  //late final PhotoClient _photoClient;
-  late final PhotoRepository _photoRepository;
+  late final IPhotoRepository _photoRepository;
   late final PhotoListScreenModel _photoListScreenModel;
   late final PhotoDetailModel _photoDetailModel;
 
   @override
   void initState() {
     super.initState();
-
-    //_http = Dio();
     _defaultErrorHandler = DefaultErrorHandler();
-    //_countryClient = CountryClient(_http);
+    // Uncomment this mock initialization for tests.
+    //_photoRepository = MockPhotoRepository();
     _photoRepository = PhotoRepository();
-    // Uncomment to use mock instead real backend
-    // _countryRepository = MockCountryRepository();
-
     _photoListScreenModel = PhotoListScreenModel(
       _photoRepository,
       _defaultErrorHandler,
@@ -53,10 +48,6 @@ class _AppDependenciesState extends State<AppDependencies> {
         Provider<PhotoDetailModel>(
           create: (_) => _photoDetailModel,
         ),
-        //Provider<PhotoClient>(create: (_) => _photoClient,)
-        // Provider<ThemeWrapper>(
-        //   create: (_) => _themeWrapper,
-        // ),
       ],
       child: widget.app,
     );

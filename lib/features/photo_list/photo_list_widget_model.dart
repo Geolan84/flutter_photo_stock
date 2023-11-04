@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
 import 'package:photo_stock/features/photo_list/photo_list.dart';
 import 'package:photo_stock/features/photo_list/photo_list_model.dart';
+import 'package:photo_stock/util/app_dictionary.dart';
 import 'package:provider/provider.dart';
 import 'package:surf_logger/surf_logger.dart';
 
@@ -39,6 +40,7 @@ class PhotoListScreenWidgetModel
   @override
   ScrollController get scrollController => _scrollController;
 
+  /// Constructor for PhotoListScreenWM.
   PhotoListScreenWidgetModel(
     PhotoListScreenModel model,
   ) : super(model);
@@ -52,10 +54,12 @@ class PhotoListScreenWidgetModel
       ..addListener(handleNextPage);
   }
 
+  /// Handles starting of scrolling, inderectly changes app bar alignment.
   Future<void> handleStartScrolling() async {
     _alignTitleCenter.value = _scrollController.position.pixels < 10;
   }
 
+  /// Handler for scroll controller, checks moment of reach the end and starts new page loading.
   Future<void> handleNextPage() async {
     if (_scrollController.position.atEdge &&
         _scrollController.position.pixels != 0) {
@@ -73,8 +77,8 @@ class PhotoListScreenWidgetModel
 
   @override
   void onErrorHandle(Object error) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Something went wrong')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppDictionary.somethingWentWrong)));
     super.onErrorHandle(error);
   }
 
@@ -107,8 +111,15 @@ class PhotoListScreenWidgetModel
 
 /// Interface of [PhotoListScreenWidgetModel]
 abstract interface class IPhotoListWidgetModel implements IWidgetModel {
+  /// Listenable list of photos to show on the screen.
   ValueListenable<EntityState<List<Photo>>> get photoListState;
+
+  /// Listenable boolean state of new page loading process for progress indicator.
   ValueListenable<bool> get isPageLoading;
+
+  /// Listenable boolean state of app bar alignment during scrolling.
   ValueListenable<bool> get alignTitleCenter;
+
+  /// Scroll controller for CustomScrollView.
   ScrollController get scrollController;
 }

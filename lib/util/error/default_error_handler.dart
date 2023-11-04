@@ -1,4 +1,5 @@
 import 'package:elementary/elementary.dart';
+import 'package:surf_logger/surf_logger.dart';
 
 /// Base implementation of error handler.
 /// This just print error to console.
@@ -9,6 +10,6 @@ class DefaultErrorHandler implements ErrorHandler {
     StackTrace? stackTrace,
   }) {
     // ignore: avoid_print
-    print(error);
+    Logger.d(error.toString());
   }
 }

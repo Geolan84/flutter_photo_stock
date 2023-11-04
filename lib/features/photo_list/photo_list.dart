@@ -6,8 +6,11 @@ import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
 import 'package:photo_stock/features/photo_detail/photo_detail.dart';
 import 'package:photo_stock/features/photo_list/photo_list_widget_model.dart';
+import 'package:photo_stock/util/app_dictionary.dart';
 
+/// Class for screen with list of photos.
 class PhotoListScreen extends ElementaryWidget<IPhotoListWidgetModel> {
+  /// Const constructor for screen with list of photos.
   const PhotoListScreen({
     Key? key,
     WidgetModelFactory wmFactory = photoListScreenWMFactory,
@@ -52,7 +55,7 @@ class _ErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Error'),
+      child: Text(AppDictionary.mainScreenError),
     );
   }
 }
@@ -73,69 +76,74 @@ class _PhotoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final photos = this.photos;
-
-    if (photos == null || photos.isEmpty) {
-      return const _EmptyList();
-    }
+    final photoListAppBar = SliverAppBar(
+      backgroundColor: Colors.white.withAlpha(250),
+      expandedHeight: 80,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        titlePadding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+        title: ValueListenableBuilder<bool>(
+          valueListenable: alignTitleCenter,
+          builder: (_, align, __) {
+            return AnimatedAlign(
+              alignment: align ? Alignment.bottomLeft : Alignment.bottomCenter,
+              duration: const Duration(milliseconds: 150),
+              child: const Text(
+                AppDictionary.photoListAppBarTitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black),
+              ),
+            );
+          },
+        ),
+      ),
+    );
 
     return CustomScrollView(
       controller: scrollController,
-      slivers: [
-        SliverAppBar(
-          backgroundColor: Colors.white.withAlpha(250),
-          expandedHeight: 80,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-            titlePadding:
-                const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-            title: ValueListenableBuilder<bool>(
-              valueListenable: alignTitleCenter,
-              builder: (_, align, __) {
-                return AnimatedAlign(
-                  alignment:
-                      align ? Alignment.bottomLeft : Alignment.bottomCenter,
-                  duration: const Duration(milliseconds: 150),
-                  child: const Text(
-                    'Photos',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.black),
+      slivers: (photos == null || photos.isEmpty)
+          ? [
+              photoListAppBar,
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: _EmptyList(),
+                ),
+              ),
+            ]
+          : [
+              photoListAppBar,
+              SliverPadding(
+                padding: const EdgeInsets.all(20),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 15,
                   ),
-                );
-              },
-            ),
-          ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.all(20),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 15,
-              crossAxisSpacing: 15,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (_, index) {
-                if (index < photos.length) {
-                  return _PhotoCard(photo: photos.elementAt(index));
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              },
-              childCount: photos.length,
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: ValueListenableBuilder<bool>(
-              valueListenable: isPageLoading,
-              builder: (_, loading, __) {
-                return loading
-                    ? const _LoadingWidget()
-                    : const SizedBox.shrink();
-              }),
-        ),
-      ],
+                  delegate: SliverChildBuilderDelegate(
+                    (_, index) {
+                      if (index < photos.length) {
+                        return _PhotoCard(photo: photos.elementAt(index));
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
+                    },
+                    childCount: photos.length,
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: ValueListenableBuilder<bool>(
+                    valueListenable: isPageLoading,
+                    builder: (_, loading, __) {
+                      return loading
+                          ? const _LoadingWidget()
+                          : const SizedBox.shrink();
+                    }),
+              ),
+            ],
     );
   }
 }
@@ -172,9 +180,7 @@ class _PhotoCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               spreadRadius: 1,
-              color: Color(int.parse(photo.color.substring(1, 7), radix: 16) +
-                      0xFF000000)
-                  .withOpacity(0.8),
+              color: photo.color.withOpacity(0.8),
               blurRadius: 4,
             )
           ],
@@ -240,7 +246,7 @@ class _EmptyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Список пуст'),
+      child: Text(AppDictionary.photoEmptyList),
     );
   }
 }
