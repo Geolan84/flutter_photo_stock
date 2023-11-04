@@ -10,7 +10,7 @@ abstract interface class IPhotoRepository {
 
 /// Manages photos data for WM.
 class PhotoRepository implements IPhotoRepository {
-  int _pageNumber = 0;
+  int _pageNumber = 1;
   final PhotoClient _client = PhotoClient();
 
   @override
