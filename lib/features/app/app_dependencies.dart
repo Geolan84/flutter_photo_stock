@@ -20,7 +20,7 @@ class AppDependencies extends StatefulWidget {
 
 class _AppDependenciesState extends State<AppDependencies> {
   late final DefaultErrorHandler _defaultErrorHandler;
-  late final PhotoRepository _photoRepository;
+  late final IPhotoRepository _photoRepository;
   late final PhotoListScreenModel _photoListScreenModel;
   late final PhotoDetailModel _photoDetailModel;
 
@@ -28,6 +28,8 @@ class _AppDependenciesState extends State<AppDependencies> {
   void initState() {
     super.initState();
     _defaultErrorHandler = DefaultErrorHandler();
+    // Uncomment this mock initialization for tests.
+    //_photoRepository = MockPhotoRepository();
     _photoRepository = PhotoRepository();
     _photoListScreenModel = PhotoListScreenModel(
       _photoRepository,

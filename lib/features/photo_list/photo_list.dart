@@ -180,9 +180,7 @@ class _PhotoCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               spreadRadius: 1,
-              color: Color(int.parse(photo.color.substring(1, 7), radix: 16) +
-                      0xFF000000)
-                  .withOpacity(0.8),
+              color: photo.color.withOpacity(0.8),
               blurRadius: 4,
             )
           ],
