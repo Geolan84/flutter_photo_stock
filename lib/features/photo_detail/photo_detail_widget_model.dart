@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
 import 'package:photo_stock/features/photo_detail/photo_detail.dart';
 import 'package:photo_stock/features/photo_detail/photo_detail_model.dart';
+import 'package:photo_stock/util/app_dictionary.dart';
 import 'package:provider/provider.dart';
 
 /// Factory for [PhotoDetailWidgetModel]
@@ -25,19 +26,21 @@ class PhotoDetailWidgetModel
   @override
   ValueListenable<EntityState<Photo>> get photoDetailState => _photoDetailState;
 
+  /// Constructor for WM.
   PhotoDetailWidgetModel(
     PhotoDetailModel model,
   ) : super(model);
 
   @override
   void onErrorHandle(Object error) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Something went wrong')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppDictionary.somethingWentWrong)));
     super.onErrorHandle(error);
   }
 }
 
 /// Interface of [PhotoDetailWidgetModel]
 abstract interface class IPhotoDetailWidgetModel implements IWidgetModel {
+  /// Getter for Photo state.
   ValueListenable<EntityState<Photo>> get photoDetailState;
 }

@@ -3,10 +3,17 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
 import 'package:photo_stock/features/photo_detail/photo_detail_widget_model.dart';
+import 'package:photo_stock/util/app_dictionary.dart';
 
+/// Describes single photo screen.
 class PhotoDetailScreen extends ElementaryWidget<IPhotoDetailWidgetModel> {
+  /// Widget with downloaded image.
   final Image photoImage;
+
+  /// Instance of displayied Photo entity.
   final Photo photo;
+
+  ///Constructor for PhotoDetailScreen.
   const PhotoDetailScreen({
     required this.photo,
     required this.photoImage,
@@ -70,7 +77,7 @@ class _Photo extends StatelessWidget {
                         size: 15,
                       ),
                       Text(
-                        'Back',
+                        AppDictionary.backTitle,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -88,20 +95,25 @@ class _Photo extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      photo.username,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 32),
-                    ),
-                    Text(
-                      '${photo.likes} likes',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                  ],
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        photo.username,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 32),
+                      ),
+                      Text(
+                        '${photo.likes} likes',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -132,7 +144,7 @@ class _ErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Error'),
+      child: Text(AppDictionary.mainScreenError),
     );
   }
 }
@@ -143,7 +155,7 @@ class _EmptyPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Такого фото не существует.'),
+      child: Text(AppDictionary.noPhoto),
     );
   }
 }
