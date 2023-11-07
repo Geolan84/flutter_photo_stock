@@ -2,17 +2,23 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_stock/data/repository/photo/photo_repository.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
 import 'package:photo_stock/features/photo_list/photo_list.dart';
 import 'package:photo_stock/features/photo_list/photo_list_model.dart';
+import 'package:photo_stock/util/error/default_error_handler.dart';
 import 'package:provider/provider.dart';
 
 /// Factory for [PhotoListScreenWidgetModel]
 PhotoListScreenWidgetModel photoListScreenWMFactory(
   BuildContext context,
 ) {
-  final model = context.read<PhotoListScreenModel>();
-
+  final repository = context.read<PhotoRepository>();
+  final errorHandler = context.read<DefaultErrorHandler>();
+  final model = PhotoListScreenModel(
+    repository,
+    errorHandler,
+  );
   return PhotoListScreenWidgetModel(model);
 }
 
