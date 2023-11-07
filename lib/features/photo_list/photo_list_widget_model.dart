@@ -39,10 +39,13 @@ class PhotoListScreenWidgetModel
   @override
   ScrollController get scrollController => _scrollController;
 
+  @override
+  ThemeData get theme => Theme.of(context);
+
   /// Constructor for PhotoListScreenWM.
   PhotoListScreenWidgetModel(
-    PhotoListScreenModel model,
-  ) : super(model);
+    super.model,
+  );
 
   @override
   void initWidgetModel() {
@@ -85,7 +88,7 @@ class PhotoListScreenWidgetModel
     _photoListState.loading(previousData);
 
     try {
-      final res = await model.loadCountries();
+      final res = await model.loadPhotosList();
       _photoListState.content(res);
     } on Exception catch (e) {
       _photoListState.error(e, previousData);
@@ -106,4 +109,7 @@ abstract interface class IPhotoListWidgetModel implements IWidgetModel {
 
   /// Scroll controller for CustomScrollView.
   ScrollController get scrollController;
+
+  /// Getter for theme from context.
+  ThemeData get theme;
 }
