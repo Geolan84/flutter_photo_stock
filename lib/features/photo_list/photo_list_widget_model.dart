@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_stock/data/repository/photo/photo_repository.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
+import 'package:photo_stock/features/photo_detail/photo_detail.dart';
 import 'package:photo_stock/features/photo_list/photo_list.dart';
 import 'package:photo_stock/features/photo_list/photo_list_model.dart';
 import 'package:photo_stock/util/app_dictionary.dart';
@@ -47,6 +48,14 @@ class PhotoListScreenWidgetModel
 
   @override
   ThemeData get theme => Theme.of(context);
+
+  @override
+  void moveToPhotoDetail(Photo photo, Image photoImage) {
+    final detail = MaterialPageRoute(
+        builder: (_) =>
+            PhotoDetailScreen(photo: photo, photoImage: photoImage));
+    Navigator.push(context, detail);
+  }
 
   /// Constructor for PhotoListScreenWM.
   PhotoListScreenWidgetModel(
@@ -118,4 +127,7 @@ abstract interface class IPhotoListWidgetModel implements IWidgetModel {
 
   /// Getter for theme from context.
   ThemeData get theme;
+
+  /// Move to photo detail screen from photo list.
+  void moveToPhotoDetail(Photo photo, Image photoImage);
 }

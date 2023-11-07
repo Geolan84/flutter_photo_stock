@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:photo_stock/domain/photo/photo.dart';
-import 'package:photo_stock/features/photo_detail/photo_detail.dart';
 import 'package:photo_stock/features/photo_list/photo_list_widget_model.dart';
 import 'package:photo_stock/util/app_dictionary.dart';
 
@@ -19,17 +18,17 @@ class PhotoListScreen extends ElementaryWidget<IPhotoListWidgetModel> {
   @override
   Widget build(IPhotoListWidgetModel wm) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: wm.theme.colorScheme.primary,
       body: EntityStateNotifierBuilder<Iterable<Photo>>(
         listenableEntityState: wm.photoListState,
         loadingBuilder: (_, __) => const _LoadingWidget(),
         errorBuilder: (_, __, ___) => const _ErrorWidget(),
         builder: (_, photos) => _PhotoList(
-          photos: photos,
-          alignTitleCenter: wm.alignTitleCenter,
-          scrollController: wm.scrollController,
-          isPageLoading: wm.isPageLoading,
-        ),
+            photos: photos,
+            alignTitleCenter: wm.alignTitleCenter,
+            scrollController: wm.scrollController,
+            isPageLoading: wm.isPageLoading,
+            wm: wm),
       ),
     );
   }
@@ -65,13 +64,14 @@ class _PhotoList extends StatelessWidget {
   final ValueListenable<bool> alignTitleCenter;
   final ScrollController scrollController;
   final ValueListenable<bool> isPageLoading;
+  final IPhotoListWidgetModel wm;
 
-  const _PhotoList({
-    required this.photos,
-    required this.alignTitleCenter,
-    required this.scrollController,
-    required this.isPageLoading,
-  });
+  const _PhotoList(
+      {required this.photos,
+      required this.alignTitleCenter,
+      required this.scrollController,
+      required this.isPageLoading,
+      required this.wm});
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,10 @@ class _PhotoList extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                     (_, index) {
                       if (index < photos.length) {
-                        return _PhotoCard(photo: photos.elementAt(index));
+                        return _PhotoCard(
+                          photo: photos.elementAt(index),
+                          wm: wm,
+                        );
                       } else {
                         return const CircularProgressIndicator();
                       }
@@ -151,7 +154,9 @@ class _PhotoList extends StatelessWidget {
 
 class _PhotoCard extends StatelessWidget {
   final Photo photo;
-  const _PhotoCard({required this.photo});
+  final IPhotoListWidgetModel wm;
+
+  const _PhotoCard({required this.photo, required this.wm});
 
   @override
   Widget build(BuildContext context) {
@@ -170,10 +175,7 @@ class _PhotoCard extends StatelessWidget {
     );
     return InkWell(
       onTap: () {
-        final detail = MaterialPageRoute(
-            builder: (_) =>
-                PhotoDetailScreen(photo: photo, photoImage: photoImage));
-        Navigator.push(context, detail);
+        wm.moveToPhotoDetail(photo, photoImage);
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
