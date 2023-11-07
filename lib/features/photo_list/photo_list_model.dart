@@ -7,7 +7,7 @@ import 'package:photo_stock/features/photo_list/photo_list.dart';
 class PhotoListScreenModel extends ElementaryModel {
   final IPhotoRepository _photoRepository;
 
-  /// Constructor for photo list model.
+  /// @nodoc
   PhotoListScreenModel(
     this._photoRepository,
     ErrorHandler errorHandler,
