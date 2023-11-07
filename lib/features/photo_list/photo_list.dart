@@ -9,7 +9,7 @@ import 'package:photo_stock/util/app_dictionary.dart';
 
 /// Class for screen with list of photos.
 class PhotoListScreen extends ElementaryWidget<IPhotoListWidgetModel> {
-  /// Const constructor for screen with list of photos.
+  /// @nodoc
   const PhotoListScreen({
     Key? key,
     WidgetModelFactory wmFactory = photoListScreenWMFactory,
@@ -76,7 +76,8 @@ class _PhotoList extends StatelessWidget {
   Widget build(BuildContext context) {
     final photos = this.photos;
     final photoListAppBar = SliverAppBar(
-      backgroundColor: Colors.white.withAlpha(250),
+      backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(250),
+      surfaceTintColor: Theme.of(context).colorScheme.primary.withAlpha(250),
       expandedHeight: 80,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
@@ -88,10 +89,10 @@ class _PhotoList extends StatelessWidget {
             return AnimatedAlign(
               alignment: align ? Alignment.bottomLeft : Alignment.bottomCenter,
               duration: const Duration(milliseconds: 150),
-              child: const Text(
+              child: Text(
                 AppDictionary.photoListAppBarTitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: Theme.of(context).textTheme.displayMedium,
               ),
             );
           },
@@ -198,31 +199,10 @@ class _PhotoCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     softWrap: false,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1, 1),
-                          blurRadius: 4,
-                        )
-                      ],
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text(
-                    '${photo.likes} likes',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(1, 1),
-                          blurRadius: 4,
-                        )
-                      ],
-                    ),
-                  ),
+                  Text('${photo.likes} likes',
+                      style: Theme.of(context).textTheme.titleSmall),
                 ],
               ),
             ),
