@@ -183,7 +183,7 @@ class _PhotoCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               spreadRadius: 1,
-              color: photo.color.withOpacity(0.8),
+              color: Color(photo.color).withOpacity(0.8),
               blurRadius: 4,
             )
           ],
@@ -209,7 +209,7 @@ class _PhotoCard extends StatelessWidget {
                       softWrap: false,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    Text('${photo.likes} likes',
+                    Text('${photo.likes} ${AppDictionary.likesTitle}',
                         style: Theme.of(context).textTheme.titleSmall),
                   ],
                 ),

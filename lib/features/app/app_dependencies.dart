@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_stock/data/api/photo/photo_api.dart';
 import 'package:photo_stock/data/repository/photo/photo_repository.dart';
 import 'package:photo_stock/features/app/app.dart';
 import 'package:photo_stock/util/error/default_error_handler.dart';
@@ -26,7 +28,7 @@ class _AppDependenciesState extends State<AppDependencies> {
     _defaultErrorHandler = DefaultErrorHandler();
     // Uncomment this mock initialization for tests.
     //_photoRepository = MockPhotoRepository();
-    _photoRepository = PhotoRepository();
+    _photoRepository = PhotoRepository(client: PhotoClient(dio: Dio()));
   }
 
   @override

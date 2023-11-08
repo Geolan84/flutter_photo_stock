@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:photo_stock/data/api/photo/photo_api_dto.dart';
 
 /// Class describes photo entity.
 class Photo {
@@ -12,7 +12,7 @@ class Photo {
   final String username;
 
   /// Color of shadow for photo.
-  final Color color;
+  final int color;
 
   /// Blur hash for image preview.
   final String blurHash;
@@ -26,28 +26,27 @@ class Photo {
     required this.blurHash,
   });
 
-  /// Parse json representation to dart photo object.
-  factory Photo.fromJson(Map<String, dynamic> json) {
-    Color parsedColor;
-    // Shadow color in json stores in String, code parses it to hex and cast to material Color.
+  /// Factory for converting PhotoApiDto to Photo
+  factory Photo.fromPhotoApiDto(PhotoApiDto apiPhoto) {
+    /// Since we get shadow color as `0x######`, we have to cut first symbol and add non-transparent alpha channel.
+    int parsedColor;
     try {
-      parsedColor = Color(
-          int.parse(json['color'].toString().substring(1, 7), radix: 16) +
-              0xFF000000);
+      parsedColor =
+          int.parse(apiPhoto.color.substring(1, 7), radix: 16) + 0xFF000000;
     } on Exception {
-      parsedColor = Colors.brown;
+      parsedColor = 0xffb74093;
     }
     return Photo(
-      imageLink: (json['urls'] as Map<String, dynamic>)['regular'].toString(),
-      username: (json['user'] as Map<String, dynamic>)['username'].toString(),
-      likes: int.parse(json['likes'].toString()),
+      blurHash: apiPhoto.blurHash,
+      imageLink: apiPhoto.imageLink,
+      likes: apiPhoto.likes,
+      username: apiPhoto.username,
       color: parsedColor,
-      blurHash: json['blur_hash'].toString(),
     );
   }
 
   /// Parses json to list of photos.
-  static List<Photo> getPhotoListFromJson(List<dynamic> src) {
-    return src.map((i) => Photo.fromJson(i as Map<String, dynamic>)).toList();
+  static List<Photo> getPhotoListFromPhotoDto(List<PhotoApiDto> src) {
+    return src.map(Photo.fromPhotoApiDto).toList();
   }
 }
