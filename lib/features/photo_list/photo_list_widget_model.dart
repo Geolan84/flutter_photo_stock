@@ -79,7 +79,8 @@ class PhotoListScreenWidgetModel
 
   /// Handler for scroll controller, checks moment of reach the end and starts new page loading.
   Future<void> handleNextPage() async {
-    if (_scrollController.position.atEdge &&
+    if (!isPageLoading.value &&
+        _scrollController.position.atEdge &&
         _scrollController.position.pixels != 0) {
       await _loadAdditionalPage();
     }
