@@ -81,7 +81,6 @@ class PhotoListScreenWidgetModel
   Future<void> handleNextPage() async {
     if (_scrollController.position.atEdge &&
         _scrollController.position.pixels != 0) {
-      _isPageLoading.value = true;
       await _loadAdditionalPage();
     }
   }
@@ -101,6 +100,7 @@ class PhotoListScreenWidgetModel
 
   Future<void> _loadAdditionalPage() async {
     final previousData = List<Photo>.from(_photoListState.value.data!);
+    _isPageLoading.value = true;
     try {
       final res = await model.loadPage();
       previousData.addAll(res);
@@ -108,6 +108,8 @@ class PhotoListScreenWidgetModel
     } on Exception catch (e) {
       Logger.w(e.toString());
       _photoListState.error(e, previousData);
+    } finally {
+      _isPageLoading.value = false;
     }
   }
 
