@@ -211,8 +211,10 @@ class _PhotoCard extends StatelessWidget {
                       softWrap: false,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    Text('${photo.likes} ${AppDictionary.likesTitle}',
-                        style: Theme.of(context).textTheme.titleSmall),
+                    Text(
+                      '${photo.likes} ${AppDictionary.likesTitle}',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                   ],
                 ),
               ),
