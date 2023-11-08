@@ -1,8 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_stock/data/api/photo/photo_api.dart';
 import 'package:photo_stock/data/repository/photo/photo_repository.dart';
 import 'package:photo_stock/features/app/app.dart';
-import 'package:photo_stock/features/photo_detail/photo_detail_model.dart';
-import 'package:photo_stock/features/photo_list/photo_list_model.dart';
 import 'package:photo_stock/util/error/default_error_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +11,7 @@ class AppDependencies extends StatefulWidget {
   ///App instanse.
   final PhotoStockApp app;
 
-  ///Const constructor for AppDependencies.
+  /// @nodoc
   const AppDependencies({required this.app, super.key});
 
   @override
@@ -20,9 +20,7 @@ class AppDependencies extends StatefulWidget {
 
 class _AppDependenciesState extends State<AppDependencies> {
   late final DefaultErrorHandler _defaultErrorHandler;
-  late final IPhotoRepository _photoRepository;
-  late final PhotoListScreenModel _photoListScreenModel;
-  late final PhotoDetailModel _photoDetailModel;
+  late final PhotoRepository _photoRepository;
 
   @override
   void initState() {
@@ -30,24 +28,19 @@ class _AppDependenciesState extends State<AppDependencies> {
     _defaultErrorHandler = DefaultErrorHandler();
     // Uncomment this mock initialization for tests.
     //_photoRepository = MockPhotoRepository();
-    _photoRepository = PhotoRepository();
-    _photoListScreenModel = PhotoListScreenModel(
-      _photoRepository,
-      _defaultErrorHandler,
-    );
-    _photoDetailModel = PhotoDetailModel(_defaultErrorHandler);
+    _photoRepository = PhotoRepository(client: PhotoClient(dio: Dio()));
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<PhotoListScreenModel>(
-          create: (_) => _photoListScreenModel,
+        Provider<DefaultErrorHandler>(
+          create: (_) => _defaultErrorHandler,
         ),
-        Provider<PhotoDetailModel>(
-          create: (_) => _photoDetailModel,
-        ),
+        Provider<PhotoRepository>(
+          create: (_) => _photoRepository,
+        )
       ],
       child: widget.app,
     );

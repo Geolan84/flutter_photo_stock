@@ -24,15 +24,13 @@ class PhotoDetailScreen extends ElementaryWidget<IPhotoDetailWidgetModel> {
   @override
   Widget build(IPhotoDetailWidgetModel wm) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: wm.theme.colorScheme.primary,
       body: EntityStateNotifierBuilder<Photo>(
         listenableEntityState: wm.photoDetailState,
         loadingBuilder: (_, __) => const _LoadingWidget(),
         errorBuilder: (_, __, ___) => const _ErrorWidget(),
-        builder: (_, __) => _Photo(
-          photo: photo,
-          photoImage: photoImage,
-        ),
+        builder: (_, __) =>
+            _Photo(photo: photo, photoImage: photoImage, wm: wm),
       ),
     );
   }
@@ -41,11 +39,10 @@ class PhotoDetailScreen extends ElementaryWidget<IPhotoDetailWidgetModel> {
 class _Photo extends StatelessWidget {
   final Photo? photo;
   final Image photoImage;
+  final IPhotoDetailWidgetModel wm;
 
-  const _Photo({
-    required this.photo,
-    required this.photoImage,
-  });
+  const _Photo(
+      {required this.photo, required this.photoImage, required this.wm});
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +63,17 @@ class _Photo extends StatelessWidget {
               ),
               Positioned(
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Row(
+                  onTap: wm.moveToPhotoList,
+                  child: Row(
                     children: [
                       Icon(
                         Icons.arrow_back_ios,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.primary,
                         size: 15,
                       ),
                       Text(
                         AppDictionary.backTitle,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],
                   ),
@@ -104,13 +96,11 @@ class _Photo extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         softWrap: false,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 32),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                       Text(
-                        '${photo.likes} likes',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
+                        '${photo.likes} ${AppDictionary.likesTitle}',
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ],
                   ),

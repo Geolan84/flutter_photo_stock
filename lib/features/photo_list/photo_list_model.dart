@@ -7,7 +7,10 @@ import 'package:photo_stock/features/photo_list/photo_list.dart';
 class PhotoListScreenModel extends ElementaryModel {
   final IPhotoRepository _photoRepository;
 
-  /// Constructor for photo list model.
+  /// Number of next page to loading.
+  int pageNumber = 1;
+
+  /// @nodoc
   PhotoListScreenModel(
     this._photoRepository,
     ErrorHandler errorHandler,
@@ -16,7 +19,8 @@ class PhotoListScreenModel extends ElementaryModel {
   /// Loads new page from photo repository.
   Future<List<Photo>> loadPage() async {
     try {
-      final res = await _photoRepository.getPage();
+      final res = await _photoRepository.getPage(pageNumber);
+      pageNumber++;
       return res;
     } on Exception catch (e) {
       handleError(e);

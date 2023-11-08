@@ -20,4 +20,7 @@ abstract class AppDictionary {
 
   /// String for title, when something went wrong.
   static const somethingWentWrong = 'Something went wrong';
+
+  /// String for likes.
+  static const likesTitle = 'likes';
 }
