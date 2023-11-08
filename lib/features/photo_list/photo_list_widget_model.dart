@@ -99,6 +99,10 @@ class PhotoListScreenWidgetModel
   }
 
   Future<void> _loadAdditionalPage() async {
+    final maybeData = _photoListState.value.data;
+    if (maybeData == null) {
+      throw StateError('Cannot to load additional page from non-data state');
+    }
     final previousData = List<Photo>.from(_photoListState.value.data!);
     _isPageLoading.value = true;
     try {
