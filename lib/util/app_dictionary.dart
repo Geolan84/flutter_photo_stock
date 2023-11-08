@@ -11,4 +11,7 @@ abstract class AppDictionary {
 
   /// String with app name.
   static const appName = 'Photo Stock';
+
+  /// String for likes.
+  static const likesTitle = 'likes';
 }

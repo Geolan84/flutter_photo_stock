@@ -18,7 +18,7 @@ class PhotoListScreen extends ElementaryWidget<IPhotoListWidgetModel> {
   @override
   Widget build(IPhotoListWidgetModel wm) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: wm.theme.colorScheme.primary,
       body: EntityStateNotifierBuilder<Iterable<Photo>>(
         listenableEntityState: wm.photoListState,
         loadingBuilder: (_, __) => const _LoadingWidget(),
@@ -201,7 +201,7 @@ class _PhotoCard extends StatelessWidget {
                     softWrap: false,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text('${photo.likes} likes',
+                  Text('${photo.likes} ${AppDictionary.likesTitle}',
                       style: Theme.of(context).textTheme.titleSmall),
                 ],
               ),
