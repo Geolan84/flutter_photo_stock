@@ -111,6 +111,11 @@ class PhotoListScreenWidgetModel
       _photoListState.error(e, previousData);
     }
   }
+
+  @override
+  Future<void> reloadPage() async {
+    await _loadPhotoList();
+  }
 }
 
 /// Interface of [PhotoListScreenWidgetModel]
@@ -132,4 +137,7 @@ abstract interface class IPhotoListWidgetModel implements IWidgetModel {
 
   /// Move to photo detail screen from photo list.
   void moveToPhotoDetail(Photo photo, Image photoImage);
+
+  /// Reload page after error.
+  Future<void> reloadPage();
 }

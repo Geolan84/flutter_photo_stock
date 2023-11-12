@@ -26,7 +26,7 @@ class Photo {
     required this.blurHash,
   });
 
-  static const _mockColor = 0xffb74093;
+  static const mockColor = 0xffb74093;
 
   /// Factory for converting PhotoApiDto to Photo
   factory Photo.fromPhotoApiDto(PhotoApiDto apiPhoto) {
@@ -37,7 +37,7 @@ class Photo {
       parsedColor =
           int.parse(apiPhoto.color.substring(1, 7), radix: 16) + 0xFF000000;
     } on Exception {
-      parsedColor = _mockColor;
+      parsedColor = mockColor;
     }
     return Photo(
       blurHash: apiPhoto.blurHash,

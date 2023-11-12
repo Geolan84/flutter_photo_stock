@@ -22,7 +22,7 @@ class PhotoListScreen extends ElementaryWidget<IPhotoListWidgetModel> {
       body: EntityStateNotifierBuilder<Iterable<Photo>>(
         listenableEntityState: wm.photoListState,
         loadingBuilder: (_, __) => const _LoadingWidget(),
-        errorBuilder: (_, __, ___) => const _ErrorWidget(),
+        errorBuilder: (_, __, ___) => _ErrorWidget(wm: wm),
         builder: (_, photos) => _PhotoList(
             photos: photos,
             alignTitleCenter: wm.alignTitleCenter,
@@ -49,13 +49,27 @@ class _LoadingWidget extends StatelessWidget {
 }
 
 class _ErrorWidget extends StatelessWidget {
-  const _ErrorWidget();
+  final IPhotoListWidgetModel wm;
+  const _ErrorWidget({required this.wm});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(AppDictionary.mainScreenError),
-    );
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(AppDictionary.mainScreenError),
+        OutlinedButton(
+          child: Text(
+            AppDictionary.retry,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+          onPressed: () async {
+            await wm.reloadPage();
+          },
+        )
+      ],
+    ));
   }
 }
 
