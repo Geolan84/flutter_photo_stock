@@ -20,7 +20,7 @@ class AppDependencies extends StatefulWidget {
 
 class _AppDependenciesState extends State<AppDependencies> {
   late final DefaultErrorHandler _defaultErrorHandler;
-  late final PhotoRepository _photoRepository;
+  late final IPhotoRepository _photoRepository;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _AppDependenciesState extends State<AppDependencies> {
         Provider<DefaultErrorHandler>(
           create: (_) => _defaultErrorHandler,
         ),
-        Provider<PhotoRepository>(
+        Provider<IPhotoRepository>(
           create: (_) => _photoRepository,
         )
       ],

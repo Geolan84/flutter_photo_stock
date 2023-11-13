@@ -16,7 +16,7 @@ import 'package:surf_logger/surf_logger.dart';
 PhotoListScreenWidgetModel photoListScreenWMFactory(
   BuildContext context,
 ) {
-  final repository = context.read<PhotoRepository>();
+  final repository = context.read<IPhotoRepository>();
   final errorHandler = context.read<DefaultErrorHandler>();
   final model = PhotoListScreenModel(
     repository,

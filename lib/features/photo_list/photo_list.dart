@@ -182,6 +182,9 @@ class _PhotoCard extends StatelessWidget {
         }
         return BlurHash(hash: photo.blurHash);
       },
+      errorBuilder: (_, __, ___) {
+        return const Icon(Icons.error_outline);
+      },
       frameBuilder: (_, child, __, ___) {
         return child;
       },

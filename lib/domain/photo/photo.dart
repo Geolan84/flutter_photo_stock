@@ -26,6 +26,7 @@ class Photo {
     required this.blurHash,
   });
 
+  /// Mocked color for photo's shadow by default.
   static const mockColor = 0xffb74093;
 
   /// Factory for converting PhotoApiDto to Photo
