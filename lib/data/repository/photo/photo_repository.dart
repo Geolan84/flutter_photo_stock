@@ -37,7 +37,7 @@ class MockPhotoRepository implements IPhotoRepository {
               'https://wallpapers.com/images/hd/funny-shrek-h7n6n0iogb00kcan.jpg',
           username: 'Shrek${index + 1}',
           likes: 28,
-          color: 0xffb74093,
+          color: Photo.mockColor,
           blurHash: 'L6PZfSi_.AyE_3t7t7R**0o#DgR4',
         ),
       ),

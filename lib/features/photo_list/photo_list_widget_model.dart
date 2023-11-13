@@ -16,7 +16,7 @@ import 'package:surf_logger/surf_logger.dart';
 PhotoListScreenWidgetModel photoListScreenWMFactory(
   BuildContext context,
 ) {
-  final repository = context.read<PhotoRepository>();
+  final repository = context.read<IPhotoRepository>();
   final errorHandler = context.read<DefaultErrorHandler>();
   final model = PhotoListScreenModel(
     repository,
@@ -130,6 +130,11 @@ class PhotoListScreenWidgetModel
       _photoListState.error(e, previousData);
     }
   }
+
+  @override
+  Future<void> reloadPage() async {
+    await _loadPhotoList();
+  }
 }
 
 /// Interface of [PhotoListScreenWidgetModel]
@@ -151,4 +156,7 @@ abstract interface class IPhotoListWidgetModel implements IWidgetModel {
 
   /// Move to photo detail screen from photo list.
   void moveToPhotoDetail(Photo photo, Image photoImage);
+
+  /// Reload page after error.
+  Future<void> reloadPage();
 }

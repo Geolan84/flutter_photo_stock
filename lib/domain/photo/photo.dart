@@ -26,15 +26,19 @@ class Photo {
     required this.blurHash,
   });
 
+  /// Mocked color for photo's shadow by default.
+  static const mockColor = 0xffb74093;
+
   /// Factory for converting PhotoApiDto to Photo
   factory Photo.fromPhotoApiDto(PhotoApiDto apiPhoto) {
     /// Since we get shadow color as `0x######`, we have to cut first symbol and add non-transparent alpha channel.
     int parsedColor;
+
     try {
       parsedColor =
           int.parse(apiPhoto.color.substring(1, 7), radix: 16) + 0xFF000000;
     } on Exception {
-      parsedColor = 0xffb74093;
+      parsedColor = mockColor;
     }
     return Photo(
       blurHash: apiPhoto.blurHash,
