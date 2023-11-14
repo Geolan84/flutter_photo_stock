@@ -28,6 +28,7 @@ class PhotoListScreen extends ElementaryWidget<IPhotoListWidgetModel> {
           alignTitleCenter: wm.alignTitleCenter,
           scrollController: wm.scrollController,
           isPageLoading: wm.isPageLoading,
+          moveToPhotoDetail: wm.moveToPhotoDetail,
         ),
       ),
     );
@@ -64,12 +65,14 @@ class _PhotoList extends StatelessWidget {
   final ValueListenable<bool> alignTitleCenter;
   final ScrollController scrollController;
   final ValueListenable<bool> isPageLoading;
+  final Function(Photo photo, Image photoImage) moveToPhotoDetail;
 
   const _PhotoList({
     required this.photos,
     required this.alignTitleCenter,
     required this.scrollController,
     required this.isPageLoading,
+    required this.moveToPhotoDetail,
   });
 
   @override
@@ -125,7 +128,10 @@ class _PhotoList extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                     (_, index) {
                       if (index < photos.length) {
-                        return _PhotoCard(photo: photos.elementAt(index));
+                        return _PhotoCard(
+                          photo: photos.elementAt(index),
+                          moveToPhotoDetail: moveToPhotoDetail,
+                        );
                       } else {
                         return const CircularProgressIndicator();
                       }
@@ -150,7 +156,9 @@ class _PhotoList extends StatelessWidget {
 
 class _PhotoCard extends StatelessWidget {
   final Photo photo;
-  const _PhotoCard({required this.photo});
+  final Function(Photo photo, Image photoImage) moveToPhotoDetail;
+
+  const _PhotoCard({required this.photo, required this.moveToPhotoDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -167,46 +175,53 @@ class _PhotoCard extends StatelessWidget {
       },
       fit: BoxFit.fill,
     );
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            spreadRadius: 1,
-            color: Color(int.parse(photo.color.substring(1, 7), radix: 16) +
-                    0xFF000000)
-                .withOpacity(0.8),
-            blurRadius: 4,
-          )
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: [
-            photoImage,
-            Positioned(
-              bottom: 10,
-              left: 10,
-              right: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    photo.username,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    softWrap: false,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Text('${photo.likes} ${AppDictionary.likesTitle}',
-                      style: Theme.of(context).textTheme.titleSmall),
-                ],
-              ),
-            ),
+    return InkWell(
+      onTap: () {
+        moveToPhotoDetail(photo, photoImage);
+      },
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              spreadRadius: 1,
+              color: Color(int.parse(photo.color.substring(1, 7), radix: 16) +
+                      0xFF000000)
+                  .withOpacity(0.8),
+              blurRadius: 4,
+            )
           ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Stack(
+            alignment: Alignment.center,
+            fit: StackFit.expand,
+            children: [
+              photoImage,
+              Positioned(
+                bottom: 10,
+                left: 10,
+                right: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      photo.username,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Text(
+                      '${photo.likes} ${AppDictionary.likesTitle}',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

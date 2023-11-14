@@ -19,6 +19,10 @@ class PhotoStockApp extends StatelessWidget {
         ),
         fontFamily: 'Roboto',
         textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 32,
+            color: Colors.black,
+          ),
           displayMedium: TextStyle(
             fontSize: 24,
             color: Colors.black,
