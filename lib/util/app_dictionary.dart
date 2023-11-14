@@ -23,4 +23,7 @@ abstract class AppDictionary {
 
   /// String for likes.
   static const likesTitle = 'likes';
+
+  /// String for reloading.
+  static const retry = 'Retry';
 }

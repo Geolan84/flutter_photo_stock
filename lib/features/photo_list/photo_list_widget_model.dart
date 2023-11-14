@@ -10,12 +10,13 @@ import 'package:photo_stock/features/photo_list/photo_list_model.dart';
 import 'package:photo_stock/util/app_dictionary.dart';
 import 'package:photo_stock/util/error/default_error_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:surf_logger/surf_logger.dart';
 
 /// Factory for [PhotoListScreenWidgetModel]
 PhotoListScreenWidgetModel photoListScreenWMFactory(
   BuildContext context,
 ) {
-  final repository = context.read<PhotoRepository>();
+  final repository = context.read<IPhotoRepository>();
   final errorHandler = context.read<DefaultErrorHandler>();
   final model = PhotoListScreenModel(
     repository,
@@ -103,11 +104,17 @@ class PhotoListScreenWidgetModel
     _photoListState.loading(previousData);
 
     try {
-      final res = await model.loadPhotosList();
+      final res = await model.loadPage();
       _photoListState.content(res);
     } on Exception catch (e) {
+      Logger.d(e.toString());
       _photoListState.error(e, previousData);
     }
+  }
+
+  @override
+  Future<void> reloadPage() async {
+    await _loadPhotoList();
   }
 }
 
@@ -130,4 +137,7 @@ abstract interface class IPhotoListWidgetModel implements IWidgetModel {
 
   /// Move to photo detail screen from photo list.
   void moveToPhotoDetail(Photo photo, Image photoImage);
+
+  /// Reload page after error.
+  Future<void> reloadPage();
 }

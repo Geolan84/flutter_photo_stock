@@ -1,3 +1,5 @@
+import 'package:photo_stock/data/api/photo/photo_api_dto.dart';
+
 /// Class describes photo entity.
 class Photo {
   /// URL to image resource of photo.
@@ -10,7 +12,7 @@ class Photo {
   final String username;
 
   /// Color of shadow for photo.
-  final String color;
+  final int color;
 
   /// Blur hash for image preview.
   final String blurHash;
@@ -24,14 +26,31 @@ class Photo {
     required this.blurHash,
   });
 
-  /// Parse json representation to dart photo object.
-  factory Photo.fromJson(Map<String, dynamic> json) {
+  /// Mocked color for photo's shadow by default.
+  static const mockColor = 0xffb74093;
+
+  /// Factory for converting PhotoApiDto to Photo
+  factory Photo.fromPhotoApiDto(PhotoApiDto apiPhoto) {
+    /// Since we get shadow color as `0x######`, we have to cut first symbol and add non-transparent alpha channel.
+    int parsedColor;
+
+    try {
+      parsedColor =
+          int.parse(apiPhoto.color.substring(1, 7), radix: 16) + 0xFF000000;
+    } on Exception {
+      parsedColor = mockColor;
+    }
     return Photo(
-      imageLink: json['urls'].toString(),
-      username: json['user'].toString(),
-      likes: int.parse(json['likes'].toString()),
-      color: json['color'].toString(),
-      blurHash: json['blur_hash'].toString(),
+      blurHash: apiPhoto.blurHash,
+      imageLink: apiPhoto.imageLink,
+      likes: apiPhoto.likes,
+      username: apiPhoto.username,
+      color: parsedColor,
     );
+  }
+
+  /// Parses json to list of photos.
+  static List<Photo> getPhotoListFromPhotoDto(List<PhotoApiDto> src) {
+    return src.map(Photo.fromPhotoApiDto).toList();
   }
 }

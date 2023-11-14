@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_stock/data/api/photo/photo_api.dart';
 import 'package:photo_stock/data/repository/photo/photo_repository.dart';
 import 'package:photo_stock/features/app/app.dart';
 import 'package:photo_stock/util/error/default_error_handler.dart';
@@ -18,13 +20,15 @@ class AppDependencies extends StatefulWidget {
 
 class _AppDependenciesState extends State<AppDependencies> {
   late final DefaultErrorHandler _defaultErrorHandler;
-  late final PhotoRepository _photoRepository;
+  late final IPhotoRepository _photoRepository;
 
   @override
   void initState() {
     super.initState();
     _defaultErrorHandler = DefaultErrorHandler();
-    _photoRepository = PhotoRepository();
+    // Uncomment this mock initialization for tests.
+    //_photoRepository = MockPhotoRepository();
+    _photoRepository = PhotoRepository(client: PhotoClient(dio: Dio()));
   }
 
   @override
@@ -34,7 +38,7 @@ class _AppDependenciesState extends State<AppDependencies> {
         Provider<DefaultErrorHandler>(
           create: (_) => _defaultErrorHandler,
         ),
-        Provider<PhotoRepository>(
+        Provider<IPhotoRepository>(
           create: (_) => _photoRepository,
         )
       ],

@@ -5,7 +5,10 @@ import 'package:photo_stock/features/photo_list/photo_list.dart';
 
 /// Model for [PhotoListScreen]
 class PhotoListScreenModel extends ElementaryModel {
-  final PhotoRepository _photoRepository;
+  final IPhotoRepository _photoRepository;
+
+  /// Number of next page to loading.
+  int pageNumber = 1;
 
   /// @nodoc
   PhotoListScreenModel(
@@ -13,11 +16,12 @@ class PhotoListScreenModel extends ElementaryModel {
     ErrorHandler errorHandler,
   ) : super(errorHandler: errorHandler);
 
-  /// Return iterable photos.
-  Future<List<Photo>> loadPhotosList() async {
+  /// Loads new page from photo repository.
+  Future<List<Photo>> loadPage() async {
     try {
-      final res = await _photoRepository.getAllPhotos();
-      return res.toList();
+      final res = await _photoRepository.getPage(pageNumber);
+      pageNumber++;
+      return res;
     } on Exception catch (e) {
       handleError(e);
       rethrow;
