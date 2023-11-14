@@ -80,9 +80,9 @@ class PhotoListScreenWidgetModel
   /// Handler for scroll controller, checks moment of reach the end and starts new page loading.
   Future<void> handleNextPage() async {
     if (!isPageLoading.value &&
-        _scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent) {
-      _isPageLoading.value = true;
+        _scrollController.position.atEdge &&
+        _scrollController.position.pixels != 0) {
+      await _loadAdditionalPage();
     }
   }
 
@@ -99,6 +99,25 @@ class PhotoListScreenWidgetModel
     super.onErrorHandle(error);
   }
 
+  Future<void> _loadAdditionalPage() async {
+    final maybeData = _photoListState.value.data;
+    if (maybeData == null) {
+      throw StateError('Cannot to load additional page from non-data state');
+    }
+    final previousData = List<Photo>.from(_photoListState.value.data!);
+    _isPageLoading.value = true;
+    try {
+      final res = await model.loadPage();
+      previousData.addAll(res);
+      _photoListState.content(previousData);
+    } on Exception catch (e) {
+      Logger.w(e.toString());
+      _photoListState.error(e, previousData);
+    } finally {
+      _isPageLoading.value = false;
+    }
+  }
+
   Future<void> _loadPhotoList() async {
     final previousData = _photoListState.value.data;
     _photoListState.loading(previousData);
@@ -107,7 +126,7 @@ class PhotoListScreenWidgetModel
       final res = await model.loadPage();
       _photoListState.content(res);
     } on Exception catch (e) {
-      Logger.d(e.toString());
+      Logger.w(e.toString());
       _photoListState.error(e, previousData);
     }
   }

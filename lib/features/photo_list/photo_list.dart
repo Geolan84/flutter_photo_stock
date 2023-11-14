@@ -40,10 +40,12 @@ class _LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Padding(
-        child: CircularProgressIndicator(),
-        padding: EdgeInsets.only(bottom: 30, top: 20),
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        padding: const EdgeInsets.only(bottom: 30, top: 20),
       ),
     );
   }

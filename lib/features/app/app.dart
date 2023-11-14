@@ -16,6 +16,7 @@ class PhotoStockApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.white,
           primary: Colors.white,
+          secondary: Colors.black,
         ),
         fontFamily: 'Roboto',
         textTheme: const TextTheme(
