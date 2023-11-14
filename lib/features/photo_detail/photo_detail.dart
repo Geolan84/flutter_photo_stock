@@ -29,8 +29,11 @@ class PhotoDetailScreen extends ElementaryWidget<IPhotoDetailWidgetModel> {
         listenableEntityState: wm.photoDetailState,
         loadingBuilder: (_, __) => const _LoadingWidget(),
         errorBuilder: (_, __, ___) => const _ErrorWidget(),
-        builder: (_, __) =>
-            _Photo(photo: photo, photoImage: photoImage, wm: wm),
+        builder: (_, __) => _Photo(
+          photo: photo,
+          photoImage: photoImage,
+          moveToPhotoList: wm.moveToPhotoList,
+        ),
       ),
     );
   }
@@ -39,10 +42,12 @@ class PhotoDetailScreen extends ElementaryWidget<IPhotoDetailWidgetModel> {
 class _Photo extends StatelessWidget {
   final Photo? photo;
   final Image photoImage;
-  final IPhotoDetailWidgetModel wm;
+  final VoidCallback moveToPhotoList;
 
   const _Photo(
-      {required this.photo, required this.photoImage, required this.wm});
+      {required this.photo,
+      required this.photoImage,
+      required this.moveToPhotoList});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +68,7 @@ class _Photo extends StatelessWidget {
               ),
               Positioned(
                 child: GestureDetector(
-                  onTap: wm.moveToPhotoList,
+                  onTap: moveToPhotoList,
                   child: Row(
                     children: [
                       Icon(

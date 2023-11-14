@@ -24,11 +24,12 @@ class PhotoListScreen extends ElementaryWidget<IPhotoListWidgetModel> {
         loadingBuilder: (_, __) => const _LoadingWidget(),
         errorBuilder: (_, __, ___) => _ErrorWidget(wm: wm),
         builder: (_, photos) => _PhotoList(
-            photos: photos,
-            alignTitleCenter: wm.alignTitleCenter,
-            scrollController: wm.scrollController,
-            isPageLoading: wm.isPageLoading,
-            wm: wm),
+          photos: photos,
+          alignTitleCenter: wm.alignTitleCenter,
+          scrollController: wm.scrollController,
+          isPageLoading: wm.isPageLoading,
+          moveToPhotoDetail: wm.moveToPhotoDetail,
+        ),
       ),
     );
   }
@@ -78,14 +79,15 @@ class _PhotoList extends StatelessWidget {
   final ValueListenable<bool> alignTitleCenter;
   final ScrollController scrollController;
   final ValueListenable<bool> isPageLoading;
-  final IPhotoListWidgetModel wm;
+  final Function(Photo photo, Image photoImage) moveToPhotoDetail;
 
-  const _PhotoList(
-      {required this.photos,
-      required this.alignTitleCenter,
-      required this.scrollController,
-      required this.isPageLoading,
-      required this.wm});
+  const _PhotoList({
+    required this.photos,
+    required this.alignTitleCenter,
+    required this.scrollController,
+    required this.isPageLoading,
+    required this.moveToPhotoDetail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +144,7 @@ class _PhotoList extends StatelessWidget {
                       if (index < photos.length) {
                         return _PhotoCard(
                           photo: photos.elementAt(index),
-                          wm: wm,
+                          moveToPhotoDetail: moveToPhotoDetail,
                         );
                       } else {
                         return const CircularProgressIndicator();
@@ -168,9 +170,9 @@ class _PhotoList extends StatelessWidget {
 
 class _PhotoCard extends StatelessWidget {
   final Photo photo;
-  final IPhotoListWidgetModel wm;
+  final Function(Photo photo, Image photoImage) moveToPhotoDetail;
 
-  const _PhotoCard({required this.photo, required this.wm});
+  const _PhotoCard({required this.photo, required this.moveToPhotoDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +194,7 @@ class _PhotoCard extends StatelessWidget {
     );
     return InkWell(
       onTap: () {
-        wm.moveToPhotoDetail(photo, photoImage);
+        moveToPhotoDetail(photo, photoImage);
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
